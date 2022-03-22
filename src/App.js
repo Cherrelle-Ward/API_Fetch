@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import weatherStatus from "./components/weatherStatus";
 
 // function App() {
 //   const [advice, setAdvice] = useState("");
@@ -60,7 +61,7 @@ const App = () => {
         throw new Error("oops");
       }
       let data = await response.json();
-      setWeather(data.consolidated_weather);
+      setWeather(data);
     } catch (error) {
       console.log("error: ", error);
       setError({ error: true, message: error.message });
@@ -74,7 +75,14 @@ const App = () => {
 
   return (
     <div>
-      {error ? <p>loading...</p> : <h2>{weather.weather_state_name}</h2>}
+      {weather.map((item, index) => {
+        return (
+          <weatherStatus
+            weather_state_name={item.weather_state_name}
+            timezone={item.timezone}
+          />
+        );
+      })}
 
       <button onClick={handleFetch}>fetch</button>
     </div>
